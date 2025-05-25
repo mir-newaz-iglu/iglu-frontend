@@ -8,7 +8,7 @@ function LoginButton() {
 
   const handleLogin = async () => {
     setLoading(true);
-    await signIn("microsoft-entra-id");
+    await signIn("microsoft-entra-id", undefined, { prompt: "login" }); //not too sure about undefined here, need more research
     setLoading(false);
   };
 
