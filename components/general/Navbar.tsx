@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import LoginButton from "../login/LoginButton";
+import LogoutButton from "../login/LogoutButton";
 //import { buttonVariants } from "../ui/button";
 
 export function Navbar() {
+  const { data: session, status } = useSession();
+  console.log("sesseion", session);
+
+  if (status === "loading") return <div>Loading...</div>;
+
   return (
     <nav className="py-5 flex items-center justify-between">
       <div className="flex items-center gap-6">
@@ -28,15 +36,18 @@ export function Navbar() {
           </Link>
         </div>
       </div>
-      <div>
-        <button className="button">Log In</button>
-      </div>
-      {/* <div className="flex items-center gap-4">
-          <button className={buttonVariants()}>Login</button>
-          <button className={buttonVariants({ variant: "secondary" })}>
-            Sign up
-          </button>
-        </div> */}
+      {session?.user?.name ? (
+        <>
+          <div>{session.user.email}</div>
+          <p>
+            <LogoutButton />
+          </p>
+        </>
+      ) : (
+        <div>
+          <LoginButton />
+        </div>
+      )}
     </nav>
   );
 }
