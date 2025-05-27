@@ -17,7 +17,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
        console.log('token 1:', {token});
        console.log('account 1:', {account});
       if (account) {    
+      const decodedIdToken: {customRoles: string | undefined} = jwtDecode(String(account.id_token));
+       console.log('custom roles', decodedIdToken.customRoles);
         token.accessToken = account.access_token;
+             
       }
       return token;
     },
@@ -31,7 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
        
       session.user.email = decodedAccessToken?.email || decodedAccessToken?.unique_name;
       session.user.id = decodedAccessToken.oid
-
+ 
       //session.user.id = token.
       return session;
     },
